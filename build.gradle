@@ -1,15 +1,40 @@
 plugins {
     id 'groovy'
+    id 'antlr'
+    id 'application'
 }
 
 group 'moyosa'
 version '0.1-SNAPSHOT'
+mainClassName = 'moyosa.Main'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    antlr 'org.antlr:antlr4:4.9.2'
+    implementation 'org.antlr:antlr4-runtime:4.9.2'
     testImplementation 'org.codehaus.groovy:groovy-all:3.0.7'
     testImplementation 'org.spockframework:spock-core:2.0-M4-groovy-3.0'
+}
+
+generateGrammarSource {
+    final PARSER_PACKAGE_NAME = 'moyosa'
+    arguments += ["-package", PARSER_PACKAGE_NAME]
+
+    doLast {
+        def parserFilePattern = 'Moyosa*'
+        def outputPath = generateGrammarSource.outputDirectory.canonicalPath
+        def parserPackagePath = "${outputPath}/${PARSER_PACKAGE_NAME.replace('.', '/')}"
+        file(parserPackagePath).mkdirs()
+        copy {
+            from outputPath
+            into parserPackagePath
+            include parserFilePattern
+        }
+        delete fileTree(outputPath) {
+            include parserFilePattern
+        }
+    }
 }
