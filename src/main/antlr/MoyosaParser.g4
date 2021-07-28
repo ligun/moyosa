@@ -1,4 +1,6 @@
 parser grammar MoyosaParser;
 options { tokenVocab=MoyosaLexer; }
 
-add : NUMBER ADD NUMBER ;
+additiveExpression :
+    left=NUMBER op=(ADD | SUB) right=NUMBER
+    ;

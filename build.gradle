@@ -21,7 +21,7 @@ dependencies {
 
 generateGrammarSource {
     final PARSER_PACKAGE_NAME = 'moyosa'
-    arguments += ["-package", PARSER_PACKAGE_NAME]
+    arguments += ["-visitor", "-package", PARSER_PACKAGE_NAME]
 
     doLast {
         def parserFilePattern = 'Moyosa*'
